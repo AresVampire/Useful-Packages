@@ -40,8 +40,11 @@ class ActivityView extends ConsumerWidget {
           ElevatedButton(
             child: const Text('Request write settings permission'),
             onPressed: () async {
-              bool result = await AndroidSettings.requestPermission();
+              bool result = await AndroidSettings.checkPermissionAllowed();
               print(result);
+              if (!result) {
+                await AndroidSettings.requestPermission();
+              }
             },
           ),
           ElevatedButton(

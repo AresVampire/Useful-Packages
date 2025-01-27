@@ -49,13 +49,16 @@ public class AndroidSettingsPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "setScreenTimeout") {
+    if (call.method == "checkPermissionAllowed") {
+      val success = checkPermissionAllowed()
+      result.success(success)
+    } else if (call.method == "requestPermission") {
+      val success = requestPermission()
+      result.success(success)
+    } else if (call.method == "setScreenTimeout") {
       val timeout = call.argument<Int>("timeout") ?: 0
       val success = setScreenTimeout(timeout)
       result.success(success)
-    } else if (call.method == "requestPermission") {
-      requestPermission()
-      result.success(true)
     } else {
       result.notImplemented()
     }
@@ -65,11 +68,17 @@ public class AndroidSettingsPlugin: FlutterPlugin, MethodCallHandler {
     channel.setMethodCallHandler(null)
   }
 
-  private fun requestPermission() {
-    val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
-    intent.data = Uri.parse("package:${context.packageName}")
-    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-    context.startActivity(intent)
+  private fun requestPermission(): Boolean {
+    return try {
+      val intent = Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS)
+      intent.data = Uri.parse("package:${context.packageName}")
+      intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+      context.startActivity(intent)
+      true
+    } catch (e: Exception) {
+      e.printStackTrace()
+      false
+    }
   }
 
   private fun checkPermissionAllowed(): Boolean {
