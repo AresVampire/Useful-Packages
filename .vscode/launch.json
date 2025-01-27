@@ -1,0 +1,94 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    
+      {
+          "name": "chrome-release",
+          "request": "launch",
+          "type": "dart",
+          "args": [
+              "--web-port", "54500"
+          ],
+          "deviceId": "chrome",
+          "flutterMode": "release",
+          "program": "lib/main.dart"
+      },
+      {
+          "name": "chrome-debug",
+          "request": "launch",
+          "type": "dart",
+          "args": [
+              "--web-port", "54500",
+              "--web-enable-expression-evaluation",
+              "--web-renderer html"
+          ],
+          "deviceId": "chrome",
+          "flutterMode": "debug",
+          "program": "lib/main.dart"
+      },
+      {
+        "name": "safari-release",
+        "request": "launch",
+        "type": "dart",
+        "args": [
+            "--web-port", "54500",
+        ],
+        "deviceId": "chrome",
+        "flutterMode": "release",
+        "program": "lib/main.dart"
+    },
+      {
+          "name": "safari-debug",
+          "request": "launch",
+          "type": "dart",
+          "args": [
+              "--web-port", "54500",
+          ],
+          "deviceId": "chrome",
+          "flutterMode": "debug",
+          "program": "lib/main.dart"
+      },
+      {
+        "name": "android-debug",
+        "request": "launch",
+        "type": "dart",
+        "deviceId": "emulator-5554",
+        "flutterMode": "debug"
+      },
+      {
+          "name": "android-profile",
+          "request": "launch",
+          "type": "dart",
+          "deviceId": "emulator-5554",
+          "flutterMode": "profile"
+      },
+      {
+          "name": "ios",
+          "request": "launch",
+          "type": "dart",
+          "deviceId": "iphone"
+      },
+      {
+          "name": "current",
+          "request": "launch",
+          "type": "dart"
+      },
+    
+    {
+        "name": "current-profile",
+        "type": "dart",
+        "request": "launch",
+        "program": "lib/main.dart",
+        "flutterMode": "profile"
+    },
+  ],
+  "compounds": [
+    {
+      "name": "Web and iOS",
+      "configurations": ["chrome", "ios"],
+    }
+  ]
+}
