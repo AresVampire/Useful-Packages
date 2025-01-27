@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
+import 'utils/text_no_selection_controls.dart';
+
 part 'main.freezed.dart';
 part 'main.g.dart';
 
@@ -14,12 +16,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(home: ActivityView());
+    return MaterialApp(
+      home: ActivityView(),
+    );
   }
 }
 
 class ActivityView extends ConsumerWidget {
-  const ActivityView({super.key});
+  ActivityView({
+    super.key,
+  });
+
+  final TextEditingController _controller = TextEditingController(
+    text: '15000',
+  );
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -40,6 +50,10 @@ class ActivityView extends ConsumerWidget {
               bool result = await AndroidSettings.setScreenTimeout(15000);
               print(result);
             },
+          ),
+          TextField(
+            controller: _controller,
+            selectionControls: TextNoSelectionControls(),
           ),
         ],
       ),
