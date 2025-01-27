@@ -20,6 +20,18 @@ class AndroidSettings {
     }
   }
 
+  static Future<bool> checkPermissionAllowed() async {
+    try {
+      final bool result = await _channel.invokeMethod('checkPermissionAllowed');
+      return result;
+    } on PlatformException catch (e) {
+      if (kDebugMode) {
+        print("AndroidSettings - checkPermissionAllowed: '${e.message}'.");
+      }
+      return false;
+    }
+  }
+
   static Future<bool> setScreenTimeout(int milliseconds) async {
     try {
       final bool result = await _channel.invokeMethod('setScreenTimeout', {

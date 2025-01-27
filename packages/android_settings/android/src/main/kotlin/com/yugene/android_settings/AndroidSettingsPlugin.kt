@@ -72,6 +72,19 @@ public class AndroidSettingsPlugin: FlutterPlugin, MethodCallHandler {
     context.startActivity(intent)
   }
 
+  private fun checkPermissionAllowed(): Boolean {
+    return try {
+      if (Settings.System.canWrite(context)) { // Ensure permission is granted
+        true
+      } else {
+        false
+      }
+    } catch (e: Exception) {
+      e.printStackTrace()
+      false
+    }
+  }
+
   private fun setScreenTimeout(timeout: Int): Boolean {
     return try {
       if (Settings.System.canWrite(context)) { // Ensure permission is granted
