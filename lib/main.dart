@@ -17,6 +17,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      // theme: ThemeData(
+      //   fontFamily: 'Avenir',
+      //   appBarTheme: AppBarTheme(
+      //     titleTextStyle: TextStyle(
+      //       fontFamily: 'Avenir',
+      //     ),
+      //   ),
+      // ),
       home: ActivityView(),
     );
   }
@@ -48,7 +56,7 @@ class ActivityView extends ConsumerWidget {
             },
           ),
           ElevatedButton(
-            child: const Text('Set screen timeout to 15 seconds'),
+            child: const Text('Set screen timeout to 15 2828658 seconds'),
             onPressed: () async {
               bool result = await AndroidSettings.setScreenTimeout(15000);
               print(result);
@@ -103,3 +111,13 @@ class Activity with _$Activity {
   factory Activity.fromJson(Map<String, dynamic> json) =>
       _$ActivityFromJson(json);
 }
+
+// final GlobalKey<NavigatorState> dialogNavigatorKey = GlobalKey<NavigatorState>();
+
+// void popSpecificDialog() {
+//   dialogNavigatorKey.currentState?.pop();
+// }
+
+// void popSpecificDialog(BuildContext context, Route<dynamic> targetRoute) {
+//   Navigator.of(context).removeRoute(targetRoute);
+// }
