@@ -19,8 +19,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       // theme: ThemeData(
       //   fontFamily: 'Avenir',
-      //   appBarTheme: AppBarTheme(
+      //   appBarTheme: const AppBarTheme(
       //     titleTextStyle: TextStyle(
+      //       fontFamily: 'Avenir',
+      //     ),
+      //   ),
+      //   tabBarTheme: const TabBarTheme(
+      //     labelStyle: TextStyle(
+      //       fontFamily: 'Avenir',
+      //     ),
+      //     unselectedLabelStyle: TextStyle(
       //       fontFamily: 'Avenir',
       //     ),
       //   ),
