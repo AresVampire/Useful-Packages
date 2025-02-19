@@ -17,22 +17,31 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // theme: ThemeData(
-      //   fontFamily: 'Avenir',
-      //   appBarTheme: const AppBarTheme(
-      //     titleTextStyle: TextStyle(
-      //       fontFamily: 'Avenir',
-      //     ),
-      //   ),
-      //   tabBarTheme: const TabBarTheme(
-      //     labelStyle: TextStyle(
-      //       fontFamily: 'Avenir',
-      //     ),
-      //     unselectedLabelStyle: TextStyle(
-      //       fontFamily: 'Avenir',
-      //     ),
-      //   ),
-      // ),
+      theme: ThemeData(
+          // fontFamily: 'Avenir',
+          // appBarTheme: const AppBarTheme(
+          //   titleTextStyle: TextStyle(
+          //     fontFamily: 'Avenir',
+          //   ),
+          // ),
+          // tabBarTheme: const TabBarTheme(
+          //   labelStyle: TextStyle(
+          //     fontFamily: 'Avenir',
+          //   ),
+          //   unselectedLabelStyle: TextStyle(
+          //     fontFamily: 'Avenir',
+          //   ),
+          // ),
+          // textButtonTheme: TextButtonThemeData(
+          //   style: ButtonStyle(
+          //     textStyle: WidgetStateProperty.all(
+          //       const TextStyle(
+          //         fontFamily: 'Avenir',
+          //       ),
+          //     ),
+          //   ),
+          // ),
+          ),
       home: ActivityView(),
     );
   }
