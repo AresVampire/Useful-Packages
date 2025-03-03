@@ -26,3 +26,7 @@ To access files saved in the external storage of an Android emulator, you can fo
     External Storage (Public Storage): /storage/emulated/0/
     App-Specific External Storage: /storage/emulated/0/Android/data/com.yourapp.package/
   - Right-click on the file you need and select "Save As" to download it.
+
+###
+Auto Start Manager for Android can be downloaded from this url.
+https://autostart-app-manager.en.softonic.com/android/download
