@@ -1,7 +1,13 @@
+import 'dart:io';
+
 import 'package:android_settings/android_settings.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import 'utils/text_no_selection_controls.dart';
@@ -57,6 +63,59 @@ class ActivityView extends ConsumerWidget {
   );
 
   final List<bool> _checkedItems = [false, false, false];
+
+  void _readFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    if (result != null) {
+      print('************');
+
+      File readFile = File(result.files.single.path!);
+
+      RandomAccessFile randomAccessFile =
+          readFile.openSync(mode: FileMode.read);
+
+      // randomAccessFile.flush(); // Flushes the file buffer to disk
+      // await Process.run('cat', [readFile.path]);
+
+      // await Process.run('sync', []); // Forces disk sync (Linux/Android)
+      // await Future.delayed(
+      //   const Duration(milliseconds: 100),
+      // ); // Wait for cache flush
+
+      await randomAccessFile.setPosition(0);
+      Uint8List data =
+          await randomAccessFile.read(await randomAccessFile.length());
+
+      randomAccessFile.close();
+
+      print(data);
+
+      if (await Permission.manageExternalStorage.request() ==
+          PermissionStatus.granted) {
+        print('Permission granted');
+
+        Directory? directory = await getExternalStorageDirectory();
+        if (directory != null) {
+          String filePath = directory.path.replaceAll(
+            'Android/data/com.example.test_app/files',
+            'test_file.txt',
+          );
+          print(filePath);
+
+          File writeFile = File(filePath);
+          print(await writeFile.exists());
+          IOSink ioSink = writeFile.openWrite(mode: FileMode.append);
+          ioSink.add([49, 50, 51, 52, 53, 54]);
+          // await ioSink.flush(); // Flushes the file buffer to disk
+
+          await ioSink.close();
+        }
+      } else {
+        print('Permission denied');
+      }
+    }
+  }
 
   void _showCustomPopupMenu(
       BuildContext context, TapDownDetails details) async {
@@ -182,6 +241,10 @@ class ActivityView extends ConsumerWidget {
           ElevatedButton(
             onPressed: () => _showMyDialog(context),
             child: const Text("Open Dialog"),
+          ),
+          ElevatedButton(
+            onPressed: () => _readFile(),
+            child: const Text("ReadFile"),
           ),
           TextField(
             controller: _controller,

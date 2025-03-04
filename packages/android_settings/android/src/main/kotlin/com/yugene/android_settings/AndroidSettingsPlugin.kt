@@ -13,7 +13,6 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
-import io.flutter.plugin.common.PluginRegistry.Registrar
 
 /** AndroidSettingsPlugin */
 public class AndroidSettingsPlugin: FlutterPlugin, MethodCallHandler {
@@ -40,13 +39,6 @@ public class AndroidSettingsPlugin: FlutterPlugin, MethodCallHandler {
   // them functionally equivalent. Only one of onAttachedToEngine or registerWith will be called
   // depending on the user's project. onAttachedToEngine or registerWith must both be defined
   // in the same class.
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "com.yugene.android_settings")
-      channel.setMethodCallHandler(AndroidSettingsPlugin())
-    }
-  }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "checkPermissionAllowed") {
