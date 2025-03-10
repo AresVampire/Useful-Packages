@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:android_settings/android_settings.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -70,6 +71,8 @@ class ActivityViewState extends State<ActivityView> {
 
   final List<bool> _checkedItems = [false, false, false];
 
+  AwesomeDialog? _awesomeDialog;
+
   @override
   void initState() {
     super.initState();
@@ -77,13 +80,41 @@ class ActivityViewState extends State<ActivityView> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _scrollToTextField();
     });
+
+    Future.delayed(const Duration(seconds: 1), () {
+      // if code needs to run on build function related, then should wrap with WidgetsBinding.instance.addPostFrameCallback
+      _showDialog();
+    });
+
+    Future.delayed(const Duration(seconds: 3), () {
+      _hideDialog();
+    });
+  }
+
+  void _showDialog() {
+    print('show dialog');
+    _awesomeDialog = AwesomeDialog(
+      context: context,
+      useRootNavigator: true,
+      dismissOnTouchOutside: false,
+      dismissOnBackKeyPress: false,
+      dialogType: DialogType.info,
+      title: 'Awesome Dialog',
+      desc: 'Dialog description here...',
+      btnCancelOnPress: () {},
+      btnOkOnPress: () {},
+    )..show();
+  }
+
+  void _hideDialog() {
+    print('hide dialog');
+    // Navigator.of(context, rootNavigator: true).pop(); // This way works as well.
+    _awesomeDialog?.dismiss();
   }
 
   void _scrollToTextField() {
-    print('start');
     final BuildContext? context = _textFieldKey.currentContext;
     if (context != null) {
-      print('auto scroll');
       Scrollable.ensureVisible(
         context,
         duration: const Duration(milliseconds: 300),
