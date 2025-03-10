@@ -48,21 +48,49 @@ class MyApp extends StatelessWidget {
           //   ),
           // ),
           ),
-      home: ActivityView(),
+      home: const ActivityView(),
     );
   }
 }
 
-class ActivityView extends ConsumerWidget {
-  ActivityView({
+class ActivityView extends StatefulWidget {
+  const ActivityView({
     super.key,
   });
 
+  @override
+  State<ActivityView> createState() => ActivityViewState();
+}
+
+class ActivityViewState extends State<ActivityView> {
   final TextEditingController _controller = TextEditingController(
     text: '15000',
   );
+  final GlobalKey _textFieldKey = GlobalKey();
 
   final List<bool> _checkedItems = [false, false, false];
+
+  @override
+  void initState() {
+    super.initState();
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToTextField();
+    });
+  }
+
+  void _scrollToTextField() {
+    print('start');
+    final BuildContext? context = _textFieldKey.currentContext;
+    if (context != null) {
+      print('auto scroll');
+      Scrollable.ensureVisible(
+        context,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
 
   void _readFile() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles();
@@ -211,46 +239,60 @@ class ActivityView extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Set screen time out')),
-      body: ListView(
-        children: [
-          ElevatedButton(
-            child: const Text('Request write settings permission'),
-            onPressed: () async {
-              bool result = await AndroidSettings.checkPermissionAllowed();
-              if (!result) {
-                await AndroidSettings.requestPermission();
-              }
-            },
-          ),
-          ElevatedButton(
-            child: const Text('Set screen timeout to 15 2828658 seconds'),
-            onPressed: () async {
-              await AndroidSettings.setScreenTimeout(15000);
-            },
-          ),
-          GestureDetector(
-            onTapDown: (details) => _showCustomPopupMenu(context, details),
-            child: const ElevatedButton(
-              onPressed: null,
-              child: Text('Show Popup Menu'),
+      body: SingleChildScrollView(
+        // Auto scroll to textfield will work with only SingleChildScrollView and Column
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            ElevatedButton(
+              child: const Text('Request write settings permission'),
+              onPressed: () async {
+                bool result = await AndroidSettings.checkPermissionAllowed();
+                if (!result) {
+                  await AndroidSettings.requestPermission();
+                }
+              },
             ),
-          ),
-          ElevatedButton(
-            onPressed: () => _showMyDialog(context),
-            child: const Text("Open Dialog"),
-          ),
-          ElevatedButton(
-            onPressed: () => _readFile(),
-            child: const Text("ReadFile"),
-          ),
-          TextField(
-            controller: _controller,
-            selectionControls: TextNoSelectionControls(),
-          ),
-        ],
+            ElevatedButton(
+              child: const Text('Set screen timeout to 15 2828658 seconds'),
+              onPressed: () async {
+                await AndroidSettings.setScreenTimeout(15000);
+              },
+            ),
+            GestureDetector(
+              onTapDown: (details) => _showCustomPopupMenu(context, details),
+              child: const ElevatedButton(
+                onPressed: null,
+                child: Text('Show Popup Menu'),
+              ),
+            ),
+            ElevatedButton(
+              onPressed: () => _showMyDialog(context),
+              child: const Text("Open Dialog"),
+            ),
+            ElevatedButton(
+              onPressed: () => _readFile(),
+              child: const Text("ReadFile"),
+            ),
+            TextField(
+              controller: _controller,
+              selectionControls: TextNoSelectionControls(),
+            ),
+            const SizedBox(height: 1000),
+            TextField(
+              key: _textFieldKey,
+              autofocus: true, // Auto focus directly
+              decoration: const InputDecoration(
+                labelText: "Auto Focused Field",
+                border: OutlineInputBorder(),
+              ),
+            ),
+            const SizedBox(height: 20),
+          ],
+        ),
       ),
     );
   }
